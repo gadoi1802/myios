@@ -1,0 +1,61 @@
+name: Build Unsigned IPA
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch: # Allows manual trigger from GitHub UI
+
+jobs:
+  build:
+    name: Build iOS Application
+    runs-on: macos-14
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode Project
+        run: xcodegen generate
+
+      - name: Build with xcodebuild
+        run: |
+          xcodebuild \
+            -project DeviceUtility.xcodeproj \
+            -scheme DeviceUtility \
+            -sdk iphoneos \
+            -configuration Release \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            clean build
+
+      - name: Verify Build Output
+        run: |
+          if [ -d "build/Build/Products/Release-iphoneos/DeviceUtility.app" ]; then
+            echo "Successfully compiled iOS App bundle!"
+          else
+            echo "Error: App bundle not found."
+            exit 1
+          fi
+
+      - name: Package into IPA
+        run: |
+          mkdir -p build/Payload
+          cp -r build/Build/Products/Release-iphoneos/DeviceUtility.app build/Payload/
+          cd build
+          zip -r ../DeviceUtility.ipa Payload
+          cd ..
+          echo "Successfully packaged unsigned DeviceUtility.ipa!"
+
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: DeviceUtility-Unsigned-IPA
+          path: DeviceUtility.ipa
+          if-no-files-found: error
