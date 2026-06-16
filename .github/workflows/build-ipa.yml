@@ -36,6 +36,7 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
+            SWIFT_VERSION=5 \
             clean build
 
       - name: Verify Build Output
