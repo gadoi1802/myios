@@ -1,22 +1,26 @@
 name: DeviceUtility
 options:
   bundleIdPrefix: com.antigravity
-targets:
-  DeviceUtility:
-    type: application
-    platform: iOS
-    deploymentTarget: "15.0"
-    sources:
-      - Sources
-      - Resources
-    settings:
-      base:
-        CODE_SIGNING_ALLOWED: NO
-        CODE_SIGN_IDENTITY: ""
-        CODE_SIGNING_REQUIRED: NO
-        DEVELOPMENT_TEAM: ""
-        PROVISIONING_PROFILE_SPECIFIER: ""
-        AD_HOC_CODE_SIGNING_ALLOWED: YES
-      configs:
-        Release:
-          VALIDATE_PRODUCT: NO
+  targets:
+    DeviceUtility:
+        type: application
+            platform: iOS
+                deploymentTarget: "15.0"
+                    sources:
+                          - Sources
+                                - Resources
+                                    settings:
+                                          base:
+                                                  CODE_SIGNING_ALLOWED: NO
+                                                          CODE_SIGN_IDENTITY: ""
+                                                                  CODE_SIGNING_REQUIRED: NO
+                                                                          DEVELOPMENT_TEAM: ""
+                                                                                  PROVISIONING_PROFILE_SPECIFIER: ""
+                                                                                          AD_HOC_CODE_SIGNING_ALLOWED: YES
+                                                                                                  SWIFT_VERSION: "5"
+                                                                                                          SWIFT_STRICT_CONCURRENCY: minimal
+                                                                                                                  IPHONEOS_DEPLOYMENT_TARGET: "15.0"
+                                                                                                                        configs:
+                                                                                                                                Release:
+                                                                                                                                          VALIDATE_PRODUCT: NO
+                                                                                                                                                    SWIFT_OPTIMIZATION_LEVEL: "-O"
